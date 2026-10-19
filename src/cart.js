@@ -19,9 +19,23 @@ function addToCart(cart, product, quantity) {
   return [...cart, { ...product, quantity }];
 }
 
-function changeQuantity() {
-  return notImplemented();
+function changeQuantity(cart, productId, quantity) {
+  const existingProduct = cart.find((item) => item.id === productId);
+  if (!existingProduct) {
+    return cart;
+  }
+  if (
+    !Number.isInteger(quantity) ||
+    quantity <= 0 ||
+    quantity > existingProduct.stock
+  ) {
+    throw new RangeError("Некорректное количество товара");
+  }
+  return cart.map((item) =>
+    item.id === productId ? { ...item, quantity } : item,
+  );
 }
+
 function removeFromCart() {
   return notImplemented();
 }
